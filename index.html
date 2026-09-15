@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROD. TACTICALBEAT | Catálogo de Beats</title>
+    <title>PROD. TACTICALDEAT | Catálogo de Beats</title>
     <style>
-        /* Variables de color para cambiar todo rápido */
         :root {
             --bg-principal: #0a0c10;
             --bg-tarjetas: #131722;
             --cian: #00f0ff;
-            --cian-oscuro: #008ba3;
             --texto: #ffffff;
             --texto-secundario: #8f9cae;
+            --crypto-verde: #26a69a;
         }
 
-        /* Configuración base */
         html { scroll-behavior: smooth; }
         body {
             background-color: var(--bg-principal);
@@ -24,29 +22,28 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            padding-bottom: 120px;
         }
 
-        /* Fondo con destello cian moderno */
         .fondo-glow {
             position: absolute;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 600px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, rgba(0,0,0,0) 70%);
+            width: 500px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(0,240,255,0.08) 0%, rgba(0,0,0,0) 70%);
             z-index: -1;
             pointer-events: none;
         }
 
-        /* Barra de navegación */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
-            background: rgba(10, 12, 16, 0.8);
-            backdrop-filter: blur(10px);
+            padding: 15px 8%;
+            background: rgba(10, 12, 16, 0.9);
+            backdrop-filter: blur(5px);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -54,7 +51,7 @@
         }
         .logo {
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             letter-spacing: 2px;
             color: var(--cian);
             text-transform: uppercase;
@@ -62,113 +59,360 @@
         .menu a {
             color: var(--texto-secundario);
             text-decoration: none;
-            margin-left: 25px;
+            margin-left: 20px;
             font-weight: 500;
-            transition: 0.3s;
+            font-size: 0.95rem;
         }
         .menu a:hover { color: var(--cian); }
 
-        /* Contenedor de Secciones */
         section {
-            padding: 80px 8%;
-            max-width: 1200px;
+            padding: 60px 8%;
+            max-width: 1000px;
             margin: 0 auto;
         }
         .titulo-seccion {
             text-align: center;
-            font-size: 2.2rem;
-            margin-bottom: 50px;
+            font-size: 2rem;
+            margin-bottom: 20px;
             font-weight: 700;
         }
         .titulo-seccion span { color: var(--cian); }
 
-        /* Sección de Inicio / Hero */
+        /* --- PESTAÑAS DE GÉNEROS --- */
+        .filtros-generos {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .btn-filtro {
+            background: var(--bg-tarjetas);
+            color: var(--texto-secundario);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.15s ease;
+            will-change: transform, border-color, color;
+        }
+        .btn-filtro:hover {
+            color: var(--texto);
+            border-color: rgba(0, 240, 255, 0.3);
+        }
+        .btn-filtro.activo {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--cian);
+            border-color: var(--cian);
+        }
+
         #inicio {
             text-align: center;
-            padding: 120px 8% 80px 8%;
+            padding: 80px 8% 40px 8%;
         }
-        #inicio h2 { font-size: 3rem; margin: 0; }
-        #inicio p { color: var(--texto-secundario); font-size: 1.2rem; max-width: 600px; margin: 20px auto; }
+        #inicio h2 { font-size: 2.5rem; margin: 0; }
+        #inicio p { color: var(--texto-secundario); font-size: 1.1rem; max-width: 600px; margin: 15px auto; }
         .btn-principal {
             background: var(--cian);
             color: #000;
-            padding: 12px 30px;
-            border-radius: 30px;
+            padding: 10px 25px;
+            border-radius: 25px;
             text-decoration: none;
             font-weight: bold;
             display: inline-block;
-            box-shadow: 0 0 15px rgba(0,240,255,0.4);
-            transition: 0.3s;
         }
-        .btn-principal:hover { transform: scale(1.05); box-shadow: 0 0 25px var(--cian); }
 
-        /* Catálogo de Beats */
-        .grid-beats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+        /* --- CONTENEDORES DE BEATS --- */
+        .lista-beats-container {
+            max-width: 850px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
-        .tarjeta-beat {
+
+        .panel-genero {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            will-change: opacity;
+        }
+        .panel-genero.activo {
+            display: flex;
+        }
+
+        .fila-beat {
             background: var(--bg-tarjetas);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 6px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
             border: 1px solid rgba(255,255,255,0.03);
-            transition: 0.3s;
-            position: relative;
         }
-        .tarjeta-beat:hover { border-color: var(--cian); transform: translateY(-5px); }
-        .portada { width: 100%; height: 220px; background: #222; border-radius: 8px; object-fit: cover; }
-        .info-beat { margin: 15px 0; }
-        .nombre-beat { font-size: 1.3rem; font-weight: bold; }
-        .tag-genero {
-            display: inline-block;
-            background: rgba(0,240,255,0.1);
-            color: var(--cian);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-top: 5px;
-        }
-        audio { width: 100%; margin-top: 10px; }
 
-        /* Sección de Licencias */
-        .grid-licencias {
+        .fila-izq {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-grow: 1;
+            min-width: 0;
+        }
+        .portada-mini {
+            width: 38px;
+            height: 38px;
+            border-radius: 4px;
+            object-fit: cover;
+            background: #1a1a1a;
+            flex-shrink: 0;
+        }
+        .info-fila {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+        .nombre-fila {
+            font-size: 0.92rem;
+            font-weight: bold;
+            color: var(--texto);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tags-fila {
+            display: flex;
+            gap: 6px;
+            font-size: 0.72rem;
+            color: var(--texto-secundario);
+            align-items: center;
+        }
+        .badge-key {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--cian);
+            padding: 0 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .acciones-fila {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .btn-play-fila {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--cian);
+            border: 1px solid var(--cian);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: background 0.15s, color 0.15s;
+        }
+        .btn-play-fila:hover {
+            background: var(--cian);
+            color: #000;
+        }
+
+        .btn-comprar-fila {
+            background: #25d366;
+            color: #000;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        /* --- PREGUNTAS FRECUENTES (FAQ) --- */
+        .faq-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            gap: 20px;
         }
-        .tarjeta-licencia {
+        .faq-card {
             background: var(--bg-tarjetas);
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            border-top: 4px solid var(--texto-secundario);
+            border-radius: 10px;
+            padding: 22px;
+            border: 1px solid rgba(255,255,255,0.03);
         }
-        .tarjeta-licencia.popular { border-top-color: var(--cian); }
-        .precio { font-size: 2rem; font-weight: bold; color: var(--texto); margin: 15px 0; }
-        .lista-caracteristicas { list-style: none; padding: 0; text-align: left; color: var(--texto-secundario); }
-        .lista-caracteristicas li { margin-bottom: 10px; }
+        .faq-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.05rem;
+            color: var(--cian);
+        }
+        .faq-card p {
+            margin: 0;
+            color: var(--texto-secundario);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
 
-        /* Sección de Contacto */
-        .formulario {
+        /* --- SECCIÓN DE PAGOS / CRYPTO --- */
+        .crypto-badges {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .crypto-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--texto);
+            font-weight: 500;
+        }
+        .crypto-item svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* --- REPRODUCTOR GLOBAL FIJO --- */
+        #reproductor-global {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 240, 255, 0.2);
+            padding: 10px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            z-index: 1000;
+            box-sizing: border-box;
+            box-shadow: 0 -10px 25px rgba(0,0,0,0.5);
+        }
+
+        .player-info-track {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 220px;
+        }
+        .player-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 4px;
+            object-fit: cover;
+            background: #1a1a1a;
+        }
+        .player-text h4 {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--texto);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+        .player-text p {
+            margin: 2px 0 0 0;
+            font-size: 0.72rem;
+            color: var(--texto-secundario);
+        }
+
+        .player-center-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex-grow: 1;
             max-width: 600px;
-            margin: 0 auto;
+        }
+        .btn-global-play {
+            background: var(--cian);
+            color: #000;
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+        .player-barra-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .barra-fondo-global {
+            background: rgba(255, 255, 255, 0.1);
+            height: 5px;
+            border-radius: 3px;
+            flex-grow: 1;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .barra-avance-global {
+            background: var(--cian);
+            height: 100%;
+            width: 0%;
+        }
+        .tiempo-global {
+            font-size: 0.72rem;
+            color: var(--texto-secundario);
+            min-width: 32px;
+        }
+
+        .player-right-acciones {
+            min-width: 140px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Secciones de Estudio y Licencias */
+        .grid-estudio, .grid-licencias {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .tarjeta-estudio, .tarjeta-licencia {
             background: var(--bg-tarjetas);
-            padding: 40px;
-            border-radius: 12px;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.03);
         }
-        .grupo-input { margin-bottom: 20px; }
-        .grupo-input label { display: block; margin-bottom: 8px; color: var(--texto-secundario); }
-        .grupo-input input, .grupo-input textarea {
-            width: 100%; padding: 12px; background: var(--bg-principal); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 6px; color: white; box-sizing: border-box;
+
+        .btn-ws {
+            display: block; text-align: center; background: #25d366; color: black; font-weight: bold; text-decoration: none; padding: 10px; border-radius: 6px; margin-top: 15px;
         }
-        .grupo-input input:focus, .grupo-input textarea:focus { border-color: var(--cian); outline: none; }
-        
-        /* Ajustes para celulares */
+
         @media (max-width: 768px) {
-            nav { flex-direction: column; gap: 15px; }
-            .menu a { margin: 0 10px; }
+            nav { flex-direction: column; gap: 10px; }
+            .menu a { margin: 0 8px; font-size: 0.85rem; }
+            .fila-beat { padding: 8px 10px; }
+            #reproductor-global {
+                flex-direction: column;
+                padding: 10px 4%;
+                gap: 6px;
+            }
+            .player-center-controls { width: 100%; }
+            .player-right-acciones { display: none; }
         }
     </style>
 </head>
@@ -176,131 +420,584 @@
 
     <div class="fondo-glow"></div>
 
-    <!-- Menú de Navegación -->
     <nav>
-    <div class="logo">Prod. Tacticaldeat</div>
-    <div class="menu">
-        <a href="#inicio">Inicio</a>
-        <a href="#beats">Beats</a>
-        <a href="#licencias">Licencias</a>
-        <a href="#citas">Estudio</a> <!-- Nueva sección -->
-        <a href="#contacto">Contacto</a>
-    </div>
-</nav>
+        <div class="logo">
+            <img src="blancologopuchis.png" alt="Logo Tacticaldeat" style="height: 70px; width: auto; vertical-align: middle; margin-right: 8px;">
+            Prod. Tacticaldeat
+        </div>
+        <div class="menu">
+            <a href="#inicio">Inicio</a>
+            <a href="#beats">Beats</a>
+            <a href="#estudio">Estudio</a>
+            <a href="#licencias">Licencias</a>
+        </div>
+    </nav>
 
-
-    <!-- Sección Inicio -->
     <section id="inicio">
         <h2>Lleva tu música al siguiente nivel</h2>
-        <p>Beats exclusivos y licencias comerciales de Trap, Reggaetón y ritmos urbanos listos para reventar las plataformas.</p>
+        <p>Beats exclusivos y licencias comerciales listos para reventar las plataformas.</p>
         <a href="#beats" class="btn-principal">Explorar Catálogo</a>
     </section>
 
-    <!-- Sección Catálogo de Beats -->
     <section id="beats">
         <h3 class="titulo-seccion">Catálogo de <span>Beats</span></h3>
-        <div class="grid-beats">
-            
-            <!-- Beat 1 -->
-            <div class="tarjeta-beat">
-                <img src="https://unsplash.com" alt="Beat Cover" class="portada">
-                <div class="info-beat">
-                    <div class="nombre-beat">Cyber Trap</div>
-                    <span class="tag-genero">140 BPM | Trap</span>
-                </div>
-                <audio controls>
-                    <source src="TU_AUDIO_AQUI.mp3" type="audio/mpeg">
-                </audio>
-            </div>
-
-            <!-- Beat 2 -->
-            <div class="tarjeta-beat">
-                <img src="https://unsplash.com" alt="Beat Cover" class="portada">
-                <div class="info-beat">
-                    <div class="nombre-beat">Noche Oscura</div>
-                    <span class="tag-genero">95 BPM | Reggaetón</span>
-                </div>
-                <audio controls>
-                    <source src="https://vzchqoybkldtrwutqrjj.supabase.co/storage/v1/object/public/beats/La%20discoteca%2090%20bpm%20Bm.mp3" type="audio/mpeg">
-                </audio>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Sección de Precios / Licencias -->
-    <section id="licencias">
-        <h3 class="titulo-seccion">Precios y <span>Licencias</span></h3>
-        <div class="grid-licencias">
-            
-            <div class="tarjeta-licencia">
-                <h4>Licencia Básica</h4>
-                <div class="precio">$29 USD</div>
-                <ul class="lista-caracteristicas">
-                    <li>✔ Archivo MP3 de alta calidad</li>
-                    <li>✔ Hasta 100,000 reproducciones</li>
-                    <li>✔ Uso para videoclips independientes</li>
-                </ul>
-            </div>
-
-            <div class="tarjeta-licencia popular">
-                <h4>Licencia Premium</h4>
-                <div class="precio">$49 USD</div>
-                <ul class="lista-caracteristicas">
-                    <li>✔ Archivos MP3 y WAV (Alta fidelidad)</li>
-                    <li>✔ Hasta 500,000 reproducciones</li>
-                    <li>✔ Distribución en Spotify/Apple Music</li>
-                </ul>
-            </div>
-
-            <div class="tarjeta-licencia">
-                <h4>Licencia Exclusiva</h4>
-                <div class="precio">Consultar</div>
-                <ul class="lista-caracteristicas">
-                    <li>✔ Pistas separadas (Stems/WAV)</li>
-                    <li>✔ Propiedad 100% exclusiva</li>
-                    <li>✔ Derechos ilimitados de reproducción</li>
-                </ul>
-            </div>
-
-        </div>
-    </section>
-
-
-        <!-- Sección de Citas / Reserva de Estudio -->
-    <section id="citas">
-        <h3 class="titulo-seccion">Reserva tu <span>Sesión de Grabación</span></h3>
-        <p style="text-align: center; color: var(--texto-secundario); max-width: 600px; margin: -30px auto 40px auto;">
-            Selecciona el día y la hora que mejor te acomode para grabar tu próximo hit, realizar mezclas o masterizar tus pistas.
-        </p>
         
-        <div class="contenedor-agenda" style="background: var(--bg-tarjetas); padding: 20px; border-radius: 12px; border: 1px solid rgba(0,240,255,0.1); box-shadow: 0 0 20px rgba(0,240,255,0.05);">
-            
-            <!-- CÓDIGO DEL CALENDARIO (REMPLAZAR AQUÍ) -->
-            <!-- De manera provisional te dejo una interfaz limpia de simulación -->
-            <div style="text-align: center; padding: 40px 0;">
-                <div style="font-size: 4rem; margin-bottom: 20px;">📅</div>
-                <h4 style="margin: 0 0 10px 0; font-size: 1.5rem;">Calendario Automatizado</h4>
-                <p style="color: var(--texto-secundario); margin-bottom: 25px;">Conecta tu cuenta de Calendly aquí para que tus clientes vean tus horas libres en tiempo real.</p>
-                <a href="https://calendly.com" target="_blank" class="btn-principal">Configurar mi Calendario Gratis</a>
-            </div>
-            <!-- FIN DEL CALENDARIO -->
+        <div class="filtros-generos" id="filtros-generos">
+            <button class="btn-filtro activo" data-genero="Trap">Trap</button>
+            <button class="btn-filtro" data-genero="Reggaetón">Reggaetón</button>
+            <button class="btn-filtro" data-genero="Boom Bap">Boom Bap</button>
+            <button class="btn-filtro" data-genero="Afrobeats">Afrobeats</button>
+            <button class="btn-filtro" data-genero="House">House</button>
+        </div>
 
+        <div class="lista-beats-container" id="contenedor-principal-beats">
+            <!-- Paneles renderizados dinámicamente bajo demanda -->
         </div>
     </section>
 
+    <section id="estudio">
+        <h3 class="titulo-seccion">Servicios de <span>Estudio</span></h3>
+        <div class="grid-estudio">
+            <div class="tarjeta-estudio">
+                <h4>Producción Completa</h4>
+                <p style="color: var(--texto-secundario); font-size: 0.9rem;">Beat exclusivo, grabación de voz en estudio, mezcla y masterización profesional listos para plataformas.</p>
+                <a href="https://wa.me/5218441275780?text=%C2%A1Que%20onda!%20Me%20interesa%20el%20paquete%20de%20producci%C3%B3n%20completa." target="_blank" class="btn-ws" style="background: var(--cian); color: #000;">🎧 Cotizar Producción</a>
+            </div>
+            <div class="tarjeta-estudio">
+                <h4>Sesión de Grabación</h4>
+                <p style="color: var(--texto-secundario); font-size: 0.9rem;">Micrófonos profesionales y espacio acondicionado acústicamente.</p>
+                <a href="https://wa.me/5218441275780?text=%C2%A1Que%20onda!%20Quiero%20apartar%20una%20fecha%20para%20grabaci%C3%B3n." target="_blank" class="btn-ws" style="background: var(--cian); color: #000;">📅 Apartar Fecha</a>
+            </div>
+            <div class="tarjeta-estudio">
+                <h4>Mezcla & Masterización</h4>
+                <p style="color: var(--texto-secundario); font-size: 0.9rem;">Procesamiento vocal avanzado y stems listos para plataformas.</p>
+                <a href="https://wa.me/5218441275780?text=%C2%A1Que%20onda!%20Me%20interesan%20tus%20servicios%20de%20mezcla." target="_blank" class="btn-ws" style="background: var(--cian); color: #000;">🎚️ Cotizar Mezcla</a>
+            </div>
+        </div>
+    </section>
 
-    <!-- Sección de Contacto -->
-    <section id="contacto">
-        <h3 class="titulo-seccion">¿Tienes alguna <span>duda?</span></h3>
-        <div class="formulario">
-            <form action="#">
-                <div class="grupo-input">
-                    <label for="nombre">Nombre / Nombre Artístico</label>
-                    <input type="text" id="nombre" required>
+    <!-- PREGUNTAS FRECUENTES (FAQ) -->
+    <section id="faq">
+        <h3 class="titulo-seccion">Preguntas <span>Frecuentes</span></h3>
+        <div class="faq-grid">
+            <div class="faq-card">
+                <h4>¿Qué recibo al comprar un beat?</h4>
+                <p>Depende de la licencia elegida. Incluye el archivo de audio sin marcas de agua (MP3 o WAV) y el contrato digital con los derechos de uso correspondientes.</p>
+            </div>
+            <div class="faq-card">
+                <h4>¿Cómo se realiza la entrega de los archivos?</h4>
+                <p>Una vez confirmado el pago (vía WhatsApp o transferencia), los archivos y stems se envían de forma directa e inmediata a tu correo o chat.</p>
+            </div>
+            <div class="faq-card">
+                <h4>¿Qué métodos de pago aceptas?</h4>
+                <p>Aceptamos transferencias bancarias, Mercado Pago y criptomonedas de forma directa y segura.</p>
+                <div class="crypto-badges">
+                    <!-- USDT -->
+                    <div class="crypto-item">
+                        <svg viewBox="0 0 32 32" fill="#26a69a"><path d="M17.5 14.5v-3.2h4.5V8.5h-4.5V6h-3v2.5H10v2.8h4.5v3.2c-3.7.3-6.5 1.5-6.5 3 0 1.7 3.3 3.1 7.5 3.1s7.5-1.4 7.5-3.1c0-1.5-2.8-2.7-6.5-3zM16 19.8c-3.3 0-6-.9-6-2s2.7-2 6-2 6 .9 6 2-2.7 2-6 2z"/></svg>
+                        USDT
+                    </div>
+                    <!-- Bitcoin -->
+                    <div class="crypto-item">
+                        <svg viewBox="0 0 32 32" fill="#f7931a"><path d="M21.5 14.5c.5-.4.8-1 .9-1.7.3-1.6-.8-2.5-2.4-2.9l.5-2-1.2-.3-.5 2c-.3-.1-.6-.2-.9-.3l.5-2-1.2-.3-.5 2c-.3-.1-.6-.2-.9-.3l-1.7-.4-.3 1.5s.9.2.9.2c.5.1.6.4.6.7l-.6 2.5c0 .1.1.2.2.2s-.2 0-.2-.1l-.6 2.6c-.1.3-.3.5-.7.4 0 0-.9-.2-.9-.2l-.6 1.6 1.6.4c.3.1.6.2.9.3l-.5 2 1.2.3.5-2c.3.1.6.2.9.3l-.5 2 1.2.3.5-2c1.7.4 3 .2 3.6-1.3.4-1.2 0-1.8-.8-2.2.6-.1 1-.5 1.2-1.2zM19 18.2c-.4 1.1-3 0-3.5-.2l.6-2.5c.5.1 3.3.7 2.9 2.7zm.4-5.2c-.3.9-2.5 0-3.2-.2l.6-2.3c.7.2 2.9.6 2.6 2.5z"/></svg>
+                        Bitcoin
+                    </div>
+                    <!-- TRON (TRX) -->
+                    <div class="crypto-item">
+                        <svg viewBox="0 0 32 32" fill="#ff0013"><path d="M16 2.5L3 9.8l13 7.4 13-7.4L16 2.5zm11.5 9.1L16 18l-11.5-6.4L16 26.5l11.5-14.9z"/></svg>
+                        TRX
+                    </div>
+                    <!-- Ethereum -->
+                    <div class="crypto-item">
+                        <svg viewBox="0 0 32 32" fill="#627eea"><path d="M16 3l-9.5 13.8L16 21l9.5-4.2L16 3zm0 21.2l-9.5-5.5L16 29l9.5-10.3-9.5 5.5z"/></svg>
+                        Ethereum
+                    </div>
+                    <!-- Mercado Pago -->
+                    <div class="crypto-item" style="color: #009ee3; border-color: rgba(0, 158, 227, 0.3);">
+                        <svg viewBox="0 0 32 32" fill="#009ee3"><path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2zm4.7 19.3c-.6.3-1.6.5-2.7.5-3.3 0-5.6-1.8-5.6-5.1 0-2.8 1.9-4.8 5.1-4.8 1 0 1.8.2 2.3.5v-2.3c-.6-.2-1.4-.4-2.3-.4-4.5 0-7.8 2.8-7.8 7.3 0 4.6 3.4 7.5 8.1 7.5 1.1 0 2-.2 2.7-.5v-2.7z"/></svg>
+                        Mercado Pago
+                    </div>
                 </div>
-                <div class="grupo-input">
-                    <label for="correo">Correo Electrónico</label>
-                    <input type="email" id="correo" required>
+            </div>
+            <div class="faq-card">
+                <h4>¿Qué pasa si compro una licencia exclusiva?</h4>
+                <p>El beat se retira de la tienda de forma inmediata y definitiva. Nadie más podrá adquirirlo ni usarlo comercialmente.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="licencias">
+        <h3 class="titulo-seccion">Tipos de <span>Licencias & Paquetes</span></h3>
+        <div class="grid-licencias" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+            
+            <!-- Trackout ($600 MXN convertidos a USD) -->
+            <div class="tarjeta-licencia">
+                <h4>Trackout / Stems</h4>
+                <div style="font-size: 1.4rem; font-weight: bold; margin: 8px 0;">$<span id="precio-trackout-usd">--</span> USD <span style="font-size: 0.75rem; color: var(--texto-secundario);">($600 MXN)</span></div>
+                <p style="color: var(--texto-secundario); font-size: 0.85rem;">• Archivo WAV estéreo + Stems en audio<br>• Ideal para mezcla personalizada<br>• Streaming y monetización digital<br>• <strong>El beat se retira de la tienda</strong></p>
+                <button onclick="agregarTrackoutDinamico()" class="btn-ws" style="width: 100%; border: none; cursor: pointer; margin-top: 10px;">➕ Agregar al estimado</button>
+            </div>
+
+            <!-- Ilimitada ($1,200 MXN convertidos a USD) -->
+            <div class="tarjeta-licencia">
+                <h4>Ilimitada</h4>
+                <div style="font-size: 1.4rem; font-weight: bold; margin: 8px 0;">$<span id="precio-ilimitada-usd">--</span> USD <span style="font-size: 0.75rem; color: var(--texto-secundario);">($1,200 MXN)</span></div>
+                <p style="color: var(--texto-secundario); font-size: 0.85rem;">• WAV estéreo + Stems de audio en alta calidad<br>• Reproducciones, streams y shows ilimitados<br>• Uso comercial pesado y videoclips<br>• <strong>El beat se retira de la tienda</strong></p>
+                <button onclick="agregarIlimitadaDinamica()" class="btn-ws" style="width: 100%; border: none; cursor: pointer; margin-top: 10px;">➕ Agregar al estimado</button>
+            </div>
+
+            <!-- Exclusiva -->
+            <div class="tarjeta-licencia">
+                <h4>Exclusiva</h4>
+                <div style="font-size: 1.4rem; font-weight: bold; margin: 8px 0;">Consultar</div>
+                <p style="color: var(--texto-secundario); font-size: 0.85rem;">• Derechos totales de autor y propiedad<br>• Stems completos de audio incluidos<br>• Ningún otro artista podrá usarlo jamás<br>• <strong>Se retira para siempre</strong></p>
+                <a href="https://wa.me/5218441275780?text=%C2%A1Que%20onda!%20Quiero%20negociar%20la%20Exclusiva%20de%20un%20beat." target="_blank" class="btn-ws" style="display: block; text-align: center; margin-top: 10px; text-decoration: none;">💎 Negociar Exclusiva</a>
+            </div>
+
+            <!-- Producción Completa -->
+            <div class="tarjeta-licencia" style="border-color: var(--cian);">
+                <h4>Producción Completa</h4>
+                <div style="font-size: 1.4rem; font-weight: bold; margin: 8px 0;">Consultar</div>
+                <p style="color: var(--texto-secundario); font-size: 0.85rem;">• Beat Exclusivo + Sesión de Grabación<br>• Mezcla y Masterización profesional<br>• El paquete más completo y económico<br>• <strong>El beat se retira de la tienda</strong></p>
+                <a href="https://wa.me/5218441275780?text=%C2%A1Que%20onda!%20Me%20interesa%20el%20paquete%20de%20Producci%C3%B3n%20Completa." target="_blank" class="btn-ws" style="display: block; text-align: center; margin-top: 10px; text-decoration: none; background: var(--cian); color: #000;">💬 Cotizar Paquete Pro</a>
+            </div>
+    </section>
+
+
+
+
+    <!-- WIDGET DE CARRITO / ESTIMADO FLOTANTE -->
+<div id="carrito-flotante" style="position: fixed; top: 90px; right: 20px; background: #1a1a1a; border: 2px solid var(--cian, #00ffff); padding: 15px; border-radius: 12px; width: 300px; box-shadow: 0 5px 25px rgba(0,0,0,0.7); z-index: 1000; display: none; color: #fff; font-family: inherit;">
+    <h4 style="margin: 0 0 5px 0; font-size: 1rem; display: flex; justify-content: space-between; align-items: center;">
+        🛒 Tu Estimado 
+        <span onclick="toggleCarrito()" style="cursor: pointer; font-size: 0.8rem; color: #aaa;">✖</span>
+    </h4>
+    <div style="font-size: 0.72rem; color: #888; margin-bottom: 8px;">
+        Tipo de cambio actual: 1 USD = $<span id="tasa-cambio-txt">...</span> MXN
+    </div>
+    <ul id="lista-carrito" style="margin: 0 0 10px 0; padding-left: 20px; font-size: 0.85rem; max-height: 120px; overflow-y: auto;">
+        <!-- Elementos dinámicos -->
+    </ul>
+    <div style="border-top: 1px solid #333; padding-top: 8px; font-size: 0.9rem; margin-bottom: 10px;">
+        <div>Total USD: $<span id="total-usd">0</span> USD</div>
+        <div style="color: var(--cian, #00ffff); font-weight: bold;">Total MXN: $<span id="total-mxn">0</span> MXN</div>
+    </div>
+    <button onclick="enviarWhatsApp()" class="btn-ws" style="width: 100%; background: #25d366; color: #fff; border: none; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer;">📲 Enviar pedido por WhatsApp</button>
+</div>
+
+<script>
+    let carrito = [];
+    let tipoCambioUSDMXN = 20.00; // Valor de respaldo por si falla la red
+    const PRECIO_TRACKOUT_MXN = 600;
+    const PRECIO_ILIMITADA_MXN = 1200;
+
+    async function obtenerTipoCambioEnTiempoReal() {
+        try {
+            // Consulta abierta y gratuita que se conecta al mercado en tiempo real
+            let respuesta = await fetch('https://open.er-api.com/v6/latest/USD');
+            let datos = await respuesta.json();
+            if (datos && datos.rates && datos.rates.MXN) {
+                tipoCambioUSDMXN = datos.rates.MXN;
+            }
+        } catch (error) {
+            console.log("Error de red, usando valor de respaldo.");
+        }
+
+        // Pintar la tasa en pantalla
+        document.getElementById('tasa-cambio-txt').innerText = tipoCambioUSDMXN.toFixed(2);
+
+        // Calcular y actualizar los precios en USD de las tarjetas en base a los pesos fijos
+        let precioTrackoutUSD = PRECIO_TRACKOUT_MXN / tipoCambioUSDMXN;
+        let precioIlimitadaUSD = PRECIO_ILIMITADA_MXN / tipoCambioUSDMXN;
+
+        document.getElementById('precio-trackout-usd').innerText = precioTrackoutUSD.toFixed(2);
+        document.getElementById('precio-ilimitada-usd').innerText = precioIlimitadaUSD.toFixed(2);
+        
+        actualizarCarritoUI();
+    }
+
+    function agregarTrackoutDinamico() {
+        let precioUSDCalculado = PRECIO_TRACKOUT_MXN / tipoCambioUSDMXN;
+        carrito.push({ nombre: 'Trackout / Stems', valor: precioUSDCalculado, esMXN: false });
+        actualizarCarritoUI();
+        document.getElementById('carrito-flotante').style.display = 'block';
+    }
+
+    function agregarIlimitadaDinamica() {
+        let precioUSDCalculado = PRECIO_ILIMITADA_MXN / tipoCambioUSDMXN;
+        carrito.push({ nombre: 'Licencia Ilimitada', valor: precioUSDCalculado, esMXN: false });
+        actualizarCarritoUI();
+        document.getElementById('carrito-flotante').style.display = 'block';
+    }
+
+    function agregarAlCarritoMXN(nombre, precioMXN) {
+        carrito.push({ nombre, valor: precioMXN, esMXN: true });
+        actualizarCarritoUI();
+        document.getElementById('carrito-flotante').style.display = 'block';
+    }
+
+    function actualizarCarritoUI() {
+        const lista = document.getElementById('lista-carrito');
+        const totalUsdEl = document.getElementById('total-usd');
+        const totalMxnEl = document.getElementById('total-mxn');
+
+        lista.innerHTML = '';
+        let totalUSDCalculado = 0;
+        let totalMXNCalculado = 0;
+
+        carrito.forEach((item, index) => {
+            if (item.esMXN) {
+                let equivUSD = item.valor / tipoCambioUSDMXN;
+                totalUSDCalculado += equivUSD;
+                totalMXNCalculado += item.valor;
+                lista.innerHTML += `<li>${item.nombre} - $${item.valor} MXN <span onclick="eliminarItem(${index})" style="color:red; cursor:pointer; margin-left:5px;">[x]</span></li>`;
+            } else {
+                let equivMXN = item.valor * tipoCambioUSDMXN;
+                totalUSDCalculado += item.valor;
+                totalMXNCalculado += equivMXN;
+                lista.innerHTML += `<li>${item.nombre} - $${item.valor.toFixed(2)} USD <span onclick="eliminarItem(${index})" style="color:red; cursor:pointer; margin-left:5px;">[x]</span></li>`;
+            }
+        });
+
+        totalUsdEl.innerText = totalUSDCalculado.toFixed(2);
+        totalMxnEl.innerText = totalMXNCalculado.toLocaleString('es-MX', { maximumFractionDigits: 0 });
+
+        if (carrito.length === 0) {
+            document.getElementById('carrito-flotante').style.display = 'none';
+        }
+    }
+
+    function eliminarItem(index) {
+        carrito.splice(index, 1);
+        actualizarCarritoUI();
+    }
+
+    function toggleCarrito() {
+        const widget = document.getElementById('carrito-flotante');
+        widget.style.display = widget.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function enviarWhatsApp() {
+        let mensaje = "¡Qué onda! Me interesa cotizar lo siguiente desde tu web:%0A";
+        let totalMXNCalculado = 0;
+
+        carrito.forEach(item => {
+            if (item.esMXN) {
+                mensaje += `- ${item.nombre} ($${item.valor} MXN)%0A`;
+                totalMXNCalculado += item.valor;
+            } else {
+                mensaje += `- ${item.nombre} ($${item.valor.toFixed(2)} USD)%0A`;
+                totalMXNCalculado += (item.valor * tipoCambioUSDMXN);
+            }
+        });
+
+        mensaje += `%0A*Total estimado:* ~$${totalMXNCalculado.toLocaleString('es-MX', { maximumFractionDigits: 0 })} MXN`;
+        window.open(`https://wa.me/5218441275780?text=${mensaje}`, '_blank');
+    }
+
+    // Se ejecuta y busca el tipo de cambio actualizado cada vez que cargan tu web
+    window.onload = function() {
+        obtenerTipoCambioEnTiempoReal();
+    };
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- REPRODUCTOR GLOBAL FIJO -->
+    <div id="reproductor-global">
+        <div class="player-info-track">
+            <img id="global-img" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=80&auto=format&fit=crop&q=80" alt="Cover" class="player-img">
+            <div class="player-text">
+                <h4 id="global-titulo">Selecciona un Beat</h4>
+                <p id="global-sub">Prod. Tacticaldeat</p>
+            </div>
+        </div>
+
+
+
+        <div class="control-volumen">
+    <span>🔊</span>
+    <input type="range" id="input-volumen" min="0" max="1" step="0.01" value="1" title="Volumen">
+</div>
+
+        <div class="player-center-controls">
+            <button class="btn-global-play" id="btn-global-play">▶</button>
+            <div class="player-barra-container">
+                <span class="tiempo-global" id="tiempo-actual">0:00</span>
+                <div class="barra-fondo-global" id="barra-progreso-global">
+                    <div class="barra-avance-global" id="barra-avance-global"></div>
+                </div>
+                <span class="tiempo-global" id="tiempo-total">0:00</span>
+            </div>
+        </div>
+
+        <div class="player-right-acciones">
+            <a href="https://wa.me/5218441275780?text=%C2%A1Que%20onda!%20Quiero%20ver%20opciones%20de%20licencia." target="_blank" class="btn-comprar-fila" id="global-btn-wsp">💬 Comprar Licencia</a>
+        </div>
+    </div>
+
+    <script>
+        const listaBeats = [
+            { id: 1, titulo: "Cyber Trap", bpm: "140 BPM", key: "F minor", genero: "Trap", portada: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=80&auto=format&fit=crop&q=80", audio: "audio/cyber-trap.mp3" },
+            { id: 2, titulo: "Midnight Boulevard", bpm: "135 BPM", key: "C# minor", genero: "Trap", portada: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=80&auto=format&fit=crop&q=80", audio: "audio/midnight-boulevard.mp3" },
+            { id: 3, titulo: "Smoke & Bass", bpm: "142 BPM", key: "G# minor", genero: "Trap", portada: "https://images.unsplash.com/photo-1526478806334-5fd488fcaabc?w=80&auto=format&fit=crop&q=80", audio: "audio/smoke-bass.mp3" },
+            { id: 4, titulo: "Abyss", bpm: "150 BPM", key: "C minor", genero: "Trap", portada: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=80&auto=format&fit=crop&q=80", audio: "audio/abyss.mp3" },
+            { id: 5, titulo: "Dark Alley", bpm: "138 BPM", key: "D minor", genero: "Trap", portada: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=80&auto=format&fit=crop&q=80", audio: "audio/dark-alley.mp3" },
+            { id: 6, titulo: "Phantom 808", bpm: "144 BPM", key: "A minor", genero: "Trap", portada: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=80&auto=format&fit=crop&q=80", audio: "audio/phantom-808.mp3" },
+            { id: 7, titulo: "Bloodline", bpm: "140 BPM", key: "E minor", genero: "Trap", portada: "https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?w=80&auto=format&fit=crop&q=80", audio: "audio/bloodline.mp3" },
+            { id: 8, titulo: "Hollow", bpm: "136 BPM", key: "F# minor", genero: "Trap", portada: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=80&auto=format&fit=crop&q=80", audio: "audio/hollow.mp3" },
+            { id: 9, titulo: "Glitch Matrix", bpm: "148 BPM", key: "G minor", genero: "Trap", portada: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=80&auto=format&fit=crop&q=80", audio: "audio/glitch-matrix.mp3" },
+            { id: 10, titulo: "Sinister", bpm: "132 BPM", key: "B minor", genero: "Trap", portada: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=80&auto=format&fit=crop&q=80", audio: "audio/sinister.mp3" },
+
+            { id: 11, titulo: "La Discoteca", bpm: "90 BPM", key: "G minor", genero: "Reggaetón", portada: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=80&auto=format&fit=crop&q=80", audio: "https://vzchqoybkldtrwutqrjj.supabase.co/storage/v1/object/public/beats/La%20discoteca%2090%20bpm%20Bm.mp3" },
+            { id: 12, titulo: "Sombra y Fuego", bpm: "94 BPM", key: "A minor", genero: "Reggaetón", portada: "https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?w=80&auto=format&fit=crop&q=80", audio: "https://vzchqoybkldtrwutqrjj.supabase.co/storage/v1/object/public/beats/Bellacoso%20Fm%2096%20Bpm.mp3" },
+            { id: 13, titulo: "Perreo Gales", bpm: "96 BPM", key: "B minor", genero: "Reggaetón", portada: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=80&auto=format&fit=crop&q=80", audio: "https://vzchqoybkldtrwutqrjj.supabase.co/storage/v1/object/public/beats/Perreusky%2088%20Bpm%20Dm.mp3" },
+            { id: 14, titulo: "Haciendo Melodia", bpm: "92 BPM", key: "G minor", genero: "Reggaetón", portada: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=80&auto=format&fit=crop&q=80", audio: "https://vzchqoybkldtrwutqrjj.supabase.co/storage/v1/object/public/beats/untitled.mp3" },
+            { id: 15, titulo: "Perreo Suave", bpm: "90 BPM", key: "C minor", genero: "Reggaetón", portada: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=80&auto=format&fit=crop&q=80", audio: "audio/perreo-suave.mp3" },
+            { id: 16, titulo: "Malianteo 844", bpm: "95 BPM", key: "F minor", genero: "Reggaetón", portada: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=80&auto=format&fit=crop&q=80", audio: "audio/malianteo-844.mp3" },
+            { id: 17, titulo: "Sensación", bpm: "92 BPM", key: "D minor", genero: "Reggaetón", portada: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=80&auto=format&fit=crop&q=80", audio: "audio/sensacion.mp3" },
+            { id: 18, titulo: "Noche de Jet", bpm: "98 BPM", key: "E minor", genero: "Reggaetón", portada: "https://images.unsplash.com/photo-1525362081669-2b476bb628c3?w=80&auto=format&fit=crop&q=80", audio: "audio/noche-de-jet.mp3" },
+            { id: 19, titulo: "Caliente", bpm: "93 BPM", key: "A# minor", genero: "Reggaetón", portada: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=80&auto=format&fit=crop&q=80", audio: "audio/caliente.mp3" },
+            { id: 20, titulo: "Eclipse Urbano", bpm: "91 BPM", key: "F# minor", genero: "Reggaetón", portada: "https://images.unsplash.com/photo-1514539079130-25950c84af65?w=80&auto=format&fit=crop&q=80", audio: "audio/eclipse-urbano.mp3" },
+
+            { id: 21, titulo: "Golden Era", bpm: "88 BPM", key: "D minor", genero: "Boom Bap", portada: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=80&auto=format&fit=crop&q=80", audio: "audio/golden-era.mp3" },
+            { id: 22, titulo: "Iron Bars", bpm: "90 BPM", key: "F minor", genero: "Boom Bap", portada: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=80&auto=format&fit=crop&q=80", audio: "audio/iron-bars.mp3" },
+            { id: 23, titulo: "Subterráneo", bpm: "86 BPM", key: "A# minor", genero: "Boom Bap", portada: "https://images.unsplash.com/photo-1514539079130-25950c84af65?w=80&auto=format&fit=crop&q=80", audio: "audio/subterraneo.mp3" },
+            { id: 24, titulo: "Vinyl Dust", bpm: "85 BPM", key: "C minor", genero: "Boom Bap", portada: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=80&auto=format&fit=crop&q=80", audio: "audio/vinyl-dust.mp3" },
+            { id: 25, titulo: "Real HipHop", bpm: "90 BPM", key: "G minor", genero: "Boom Bap", portada: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=80&auto=format&fit=crop&q=80", audio: "audio/real-hiphop.mp3" },
+            { id: 26, titulo: "East Coast Vibe", bpm: "89 BPM", key: "E minor", genero: "Boom Bap", portada: "https://images.unsplash.com/photo-1526478806334-5fd488fcaabc?w=80&auto=format&fit=crop&q=80", audio: "audio/east-coast.mp3" },
+            { id: 27, titulo: "Caja y Bombo", bpm: "87 BPM", key: "B minor", genero: "Boom Bap", portada: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=80&auto=format&fit=crop&q=80", audio: "audio/caja-y-bombo.mp3" },
+            { id: 28, titulo: "Street Poetry", bpm: "91 BPM", key: "A minor", genero: "Boom Bap", portada: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=80&auto=format&fit=crop&q=80", audio: "audio/street-poetry.mp3" },
+            { id: 29, titulo: "Classic Rhythms", bpm: "88 BPM", key: "D# minor", genero: "Boom Bap", portada: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=80&auto=format&fit=crop&q=80", audio: "audio/classic-rhythms.mp3" },
+            { id: 30, titulo: "Old School Soul", bpm: "84 BPM", key: "F# minor", genero: "Boom Bap", portada: "https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?w=80&auto=format&fit=crop&q=80", audio: "audio/old-school.mp3" },
+
+            { id: 31, titulo: "Lagos & Voodoo", bpm: "105 BPM", key: "F# minor", genero: "Afrobeats", portada: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=80&auto=format&fit=crop&q=80", audio: "audio/lagos-voodoo.mp3" },
+            { id: 32, titulo: "Accra Bounce", bpm: "102 BPM", key: "D# minor", genero: "Afrobeats", portada: "https://images.unsplash.com/photo-1525362081669-2b476bb628c3?w=80&auto=format&fit=crop&q=80", audio: "audio/accra-bounce.mp3" },
+            { id: 33, titulo: "Dakar Nights", bpm: "108 BPM", key: "E minor", genero: "Afrobeats", portada: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=80&auto=format&fit=crop&q=80", audio: "audio/dakar-nights.mp3" },
+            { id: 34, titulo: "Savannah Groove", bpm: "100 BPM", key: "C minor", genero: "Afrobeats", portada: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=80&auto=format&fit=crop&q=80", audio: "audio/savannah-groove.mp3" },
+            { id: 35, titulo: "Abuja Sunset", bpm: "104 BPM", key: "G minor", genero: "Afrobeats", portada: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=80&auto=format&fit=crop&q=80", audio: "audio/abuja-sunset.mp3" },
+            { id: 36, titulo: "Tropical Vibe", bpm: "106 BPM", key: "A minor", genero: "Afrobeats", portada: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=80&auto=format&fit=crop&q=80", audio: "audio/tropical-vibe.mp3" },
+            { id: 37, titulo: "Afro Magic", bpm: "102 BPM", key: "F minor", genero: "Afrobeats", portada: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=80&auto=format&fit=crop&q=80", audio: "audio/afro-magic.mp3" },
+            { id: 38, titulo: "Golden Coast", bpm: "105 BPM", key: "B minor", genero: "Afrobeats", portada: "https://images.unsplash.com/photo-1526478806334-5fd488fcaabc?w=80&auto=format&fit=crop&q=80", audio: "audio/golden-coast.mp3" },
+            { id: 39, titulo: "Rhythm of Africa", bpm: "107 BPM", key: "D minor", genero: "Afrobeats", portada: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=80&auto=format&fit=crop&q=80", audio: "audio/rhythm-africa.mp3" },
+            { id: 40, titulo: "Lagos Sunset", bpm: "101 BPM", key: "C# minor", genero: "Afrobeats", portada: "https://images.unsplash.com/photo-1514539079130-25950c84af65?w=80&auto=format&fit=crop&q=80", audio: "audio/lagos-sunset.mp3" },
+
+            { id: 41, titulo: "Neon Drift", bpm: "128 BPM", key: "E minor", genero: "House", portada: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=80&auto=format&fit=crop&q=80", audio: "audio/neon-drift.mp3" },
+            { id: 42, titulo: "Deep Minimal", bpm: "124 BPM", key: "A minor", genero: "House", portada: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=80&auto=format&fit=crop&q=80", audio: "audio/deep-minimal.mp3" },
+            { id: 43, titulo: "Club Space", bpm: "126 BPM", key: "F minor", genero: "House", portada: "https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?w=80&auto=format&fit=crop&q=80", audio: "audio/club-space.mp3" },
+            { id: 44, titulo: "Sublime Bass", bpm: "130 BPM", key: "G minor", genero: "House", portada: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=80&auto=format&fit=crop&q=80", audio: "audio/sublime-bass.mp3" },
+            { id: 45, titulo: "Warehouse", bpm: "125 BPM", key: "D minor", genero: "House", portada: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=80&auto=format&fit=crop&q=80", audio: "audio/warehouse.mp3" },
+            { id: 46, titulo: "Afterhours", bpm: "122 BPM", key: "C minor", genero: "House", portada: "https://images.unsplash.com/photo-1525362081669-2b476bb628c3?w=80&auto=format&fit=crop&q=80", audio: "audio/afterhours.mp3" },
+            { id: 47, titulo: "Electric Pulse", bpm: "128 BPM", key: "B minor", genero: "House", portada: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=80&auto=format&fit=crop&q=80", audio: "audio/electric-pulse.mp3" },
+            { id: 48, titulo: "Summer Vibe", bpm: "124 BPM", key: "F# minor", genero: "House", portada: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=80&auto=format&fit=crop&q=80", audio: "audio/summer-vibe.mp3" },
+            { id: 49, titulo: "Sunset Groove", bpm: "127 BPM", key: "C# minor", genero: "House", portada: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=80&auto=format&fit=crop&q=80", audio: "audio/sunset-groove.mp3" },
+            { id: 50, titulo: "Midnight Club", bpm: "129 BPM", key: "G# minor", genero: "House", portada: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=80&auto=format&fit=crop&q=80", audio: "audio/midnight-club.mp3" }
+        ];
+
+       document.addEventListener('DOMContentLoaded', () => {
+            const contenedorPrincipal = document.getElementById('contenedor-principal-beats');
+            const filtrosContenedor = document.getElementById('filtros-generos');
+            
+            const audioGlobal = new Audio();
+            audioGlobal.preload = "none";
+
+            let idBeatActual = null;
+            let generoSeleccionado = "Trap";
+            const generosRenderizados = new Set();
+
+            const btnGlobalPlay = document.getElementById('btn-global-play');
+            const globalImg = document.getElementById('global-img');
+            const globalTitulo = document.getElementById('global-titulo');
+            const globalSub = document.getElementById('global-sub');
+            const globalBtnWsp = document.getElementById('global-btn-wsp');
+            const barraAvanceGlobal = document.getElementById('barra-avance-global');
+            const barraProgresoGlobal = document.getElementById('barra-progreso-global');
+            const tiempoActualEl = document.getElementById('tiempo-actual');
+            const tiempoTotalEl = document.getElementById('tiempo-total');
+
+
+
+            // Control de volumen global
+const inputVolumen = document.getElementById('input-volumen');
+
+if (inputVolumen) {
+    // Sincronizar el volumen del elemento de audio con el input
+    inputVolumen.addEventListener('input', (e) => {
+        audioGlobal.volume = e.target.value;
+    });
+}
+
+            function renderizarPanel(genero) {
+                if (generosRenderizados.has(genero)) return;
+
+                const panel = document.createElement('div');
+                panel.classList.add('panel-genero');
+                panel.setAttribute('data-panel-genero', genero);
+                if (genero === generoSeleccionado) panel.classList.add('activo');
+
+                const beatsFiltrados = listaBeats.filter(b => b.genero === genero);
+                const fragmento = document.createDocumentFragment();
+
+                beatsFiltrados.forEach(beat => {
+                    const mensajeWhatsApp = encodeURIComponent(`¡Qué onda! Me interesa el beat "${beat.titulo}" (${beat.key} - ${beat.bpm}), quiero ver detalles de la licencia.`);
+                    const linkWhatsApp = `https://wa.me/5218441275780?text=${mensajeWhatsApp}`;
+
+                    const fila = document.createElement('div');
+                    fila.classList.add('fila-beat');
+                    fila.setAttribute('data-beat-id', beat.id);
+                    
+                    const estaSonando = (idBeatActual === beat.id && !audioGlobal.paused);
+
+                    fila.innerHTML = `
+                        <div class="fila-izq">
+                            <img src="${beat.portada}" alt="Cover" class="portada-mini" loading="lazy">
+                            <div class="info-fila">
+                                <span class="nombre-fila">${beat.titulo}</span>
+                                <div class="tags-fila">
+                                    <span>${beat.bpm}</span>
+                                    <span>•</span>
+                                    <span class="badge-key">${beat.key}</span>
+                                    <span>•</span>
+                                    <span>${beat.genero}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="acciones-fila">
+                            <button class="btn-play-fila" data-id="${beat.id}" title="Reproducir">${estaSonando ? '❚❚' : '▶'}</button>
+                            <a href="${linkWhatsApp}" target="_blank" class="btn-comprar-fila">💬 Comprar</a>
+                        </div>
+                    `;
+                    fragmento.appendChild(fila);
+                });
+
+                panel.appendChild(fragmento);
+                contenedorPrincipal.appendChild(panel);
+                generosRenderizados.add(genero);
+            }
+
+            renderizarPanel(generoSeleccionado);
+
+            function actualizarBotonesPlay() {
+                document.querySelectorAll('.btn-play-fila').forEach(btn => {
+                    const beatId = parseInt(btn.getAttribute('data-id'));
+                    const estaSonando = (idBeatActual === beatId && !audioGlobal.paused);
+                    btn.textContent = estaSonando ? '❚❚' : '▶';
+                });
+            }
+
+            filtrosContenedor.addEventListener('click', (e) => {
+                const btn = e.target.closest('.btn-filtro');
+                if (btn) {
+                    document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
+                    btn.classList.add('activo');
+                    
+                    generoSeleccionado = btn.getAttribute('data-genero');
+
+                    renderizarPanel(generoSeleccionado);
+
+                    requestAnimationFrame(() => {
+                        document.querySelectorAll('.panel-genero').forEach(panel => {
+                            if (panel.getAttribute('data-panel-genero') === generoSeleccionado) {
+                                panel.classList.add('activo');
+                            } else {
+                                panel.classList.remove('activo');
+                            }
+                        });
+                    });
+                }
+            });
+
+            function formatearTiempo(segundos) {
+                if (isNaN(segundos)) return "0:00";
+                const min = Math.floor(segundos / 60);
+                const seg = Math.floor(segundos % 60);
+                return `${min}:${seg < 10 ? '0' : ''}${seg}`;
+            }
+
+            function togglePlay(beat) {
+                if (idBeatActual === beat.id) {
+                    if (audioGlobal.paused) {
+                        audioGlobal.play();
+                        btnGlobalPlay.textContent = '❚❚';
+                    } else {
+                        audioGlobal.pause();
+                        btnGlobalPlay.textContent = '▶';
+                    }
+                    actualizarBotonesPlay();
+                } else {
+                    audioGlobal.src = beat.audio;
+                    audioGlobal.play();
+                    idBeatActual = beat.id;
+
+                    globalImg.src = beat.portada;
+                    globalTitulo.textContent = beat.titulo;
+                    globalSub.textContent = `${beat.genero} • ${beat.bpm} • ${beat.key}`;
+                    
+                    const mensajeWhatsApp = encodeURIComponent(`¡Qué onda! Me interesa el beat "${beat.titulo}" (${beat.key} - ${beat.bpm}), quiero ver detalles de la licencia.`);
+                    globalBtnWsp.href = `https://wa.me/5218441275780?text=${mensajeWhatsApp}`;
+
+                    btnGlobalPlay.textContent = '❚❚';
+                    actualizarBotonesPlay();
+                }
+            }
+
+            contenedorPrincipal.addEventListener('click', (e) => {
+                const btn = e.target.closest('.btn-play-fila');
+                if (btn) {
+                    const beatId = parseInt(btn.getAttribute('data-id'));
+                    const beatEncontrado = listaBeats.find(b => b.id === beatId);
+                    if (beatEncontrado) togglePlay(beatEncontrado);
+                }
+            });
+
+            btnGlobalPlay.addEventListener('click', () => {
+                if (idBeatActual !== null) {
+                    const beatEncontrado = listaBeats.find(b => b.id === idBeatActual);
+                    if (beatEncontrado) togglePlay(beatEncontrado);
+                }
+            });
+
+            audioGlobal.addEventListener('timeupdate', () => {
+                if (audioGlobal.duration) {
+                    const porcentaje = (audioGlobal.currentTime / audioGlobal.duration) * 100;
+                    barraAvanceGlobal.style.width = `${porcentaje}%`;
+                    tiempoActualEl.textContent = formatearTiempo(audioGlobal.currentTime);
+                }
+            });
+
+            audioGlobal.addEventListener('loadedmetadata', () => {
+                tiempoTotalEl.textContent = formatearTiempo(audioGlobal.duration);
+            });
+
+            barraProgresoGlobal.addEventListener('click', (e) => {
+                if (audioGlobal.duration) {
+                    const rect = barraProgresoGlobal.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    const porcentaje = clickX / rect.width;
+                    audioGlobal.currentTime = porcentaje * audioGlobal.duration;
+                }
+            });
+
+            audioGlobal.addEventListener('ended', () => {
+                btnGlobalPlay.textContent = '▶';
+                barraAvanceGlobal.style.width = '0%';
+                tiempoActualEl.textContent = '0:00';
+                idBeatActual = null;
+                actualizarBotonesPlay();
+            });
+        });
+    </script>
+</body>
+</html>
 
 
